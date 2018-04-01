@@ -81,11 +81,11 @@
     }
     btn_convert.onclick = function(){
         txt_message.value = cipher4fun(txt_key.value, txt_message.value);
-        dummy_dom.search = "?"+encodeURI(txt_message.value);
+        dummy_dom.search = "?"+encodeURIComponent(txt_message.value);
         history.pushState(null, null, dummy_dom.href.toString());
     };
     btn_url.onclick = function(){
-        dummy_dom.search = "?"+encodeURI(txt_message.value);
+        dummy_dom.search = "?"+encodeURIComponent(txt_message.value);
         txt_url.value = dummy_dom.href;
     };
     txt_url.onclick = function(){
