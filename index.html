@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher 4 Fun</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <script src="cipher4fun.js" type="application/javascript"></script>
+    <style>
+        *{
+            box-sizing: border-box;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+        div.warpper{
+            max-width: 640px;
+            padding: 16px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        form textarea{
+            width: 100%;
+            resize: vertical;
+            min-height: 100px;
+        }
+        form input{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="warpper">
+    <h1>Cipher 4 Fun</h1>
+    <p>
+        This is a cipher for fun, the message will be encrypted by Vigenère Cipher with a pseudo-random generated key. The pseudo-random generation serve some entropy but it is <strong>not reliable</strong>. The encryption it self also <strong>does not guaranteed safe</strong>. This cipher is just an idea for encryption, so use it at your own risk.
+    </p>
+    <form class="pure-form">
+        <fieldset class="pure-group">
+            <input type="password" placeholder="Key" id="txt_key"/>
+            <textarea placeholder="Your Message" id="txt_message"></textarea>
+            <input type="button" value="Convert" id="btn_convert" class="pure-button pure-button-primary"/>
+        </fieldset>
+        <fieldset class="pure-group">
+            <input type="button" value="Generate URL" id="btn_url" class="pure-button"/>
+            <input type="url" placeholder="URL" id="txt_url" readonly/>
+        </fieldset>
+    </form>
+    <div class="pure-g">
+        <div class="pure-u-1 pure-u-sm-2-5">
+            <h2>How to use</h2>
+            <ol>
+                <li>Type your key.</li>
+                <li>Type your message.</li>
+                <li>Click convert.</li>
+            </ol>
+        </div>
+        <div class="pure-u-1 pure-u-sm-3-5">
+            <h2>Note</h2>
+            <p>
+                This cipher will only encrypt <strong>ASCII printable characters</strong>. Any other characters will be ignored and remain the same in the text.
+            </p>
+        </div>
+    </div>
+</div>
+<script type="application/javascript">
+    let txt_message = document.getElementById('txt_message');
+    let txt_key = document.getElementById('txt_key');
+    let txt_url = document.getElementById('txt_url');
+    let btn_convert = document.getElementById('btn_convert');
+    let btn_url = document.getElementById('btn_url');
+    let dummy_dom = document.createElement('a');
+    dummy_dom.href = window.location;
+    if(window.location.search.startsWith("?")){
+        txt_message.value = decodeURI(window.location.search.slice(1));
+    }
+    btn_convert.onclick = function(){
+        txt_message.value = cipher4fun(txt_key.value, txt_message.value);
+        dummy_dom.search = "?"+encodeURI(txt_message.value);
+        history.pushState(null, null, dummy_dom.href.toString());
+    };
+    btn_url.onclick = function(){
+        dummy_dom.search = "?"+encodeURI(txt_message.value);
+        txt_url.value = dummy_dom.href;
+    };
+    txt_url.onclick = function(){
+        txt_url.setSelectionRange(0, txt_url.value.length);
+    };
+</script>
+</body>
+</html>
